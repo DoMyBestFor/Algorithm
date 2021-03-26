@@ -4,7 +4,7 @@ import java.io.*;
 public class HelloWorld{
 
     static int binary_search(int[] arr, int target, int start, int end){
-        int result;
+        int result = 0;
         
         while(start <= end){
             int total = 0;

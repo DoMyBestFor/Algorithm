@@ -4,6 +4,7 @@ import java.io.*;
 public class HelloWorld{
 
     static int binary_search(int[] arr, int target, int start, int end){
+        int result;
         
         while(start <= end){
             int total = 0;
@@ -14,18 +15,16 @@ public class HelloWorld{
                     total = total + (num - mid);
             }
             
-            if(total == target){
-                return mid;
-            }
-            else if(total < target){
+            if(total < target){
                 end = mid - 1;
             }
             else{
+                result = mid;
                 start = mid + 1;
             }
         }
         
-        return 0;
+        return result;
         
     }
 

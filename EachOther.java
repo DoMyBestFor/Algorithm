@@ -3,6 +3,8 @@ package code;
 import java.util.Scanner;
 
 public class solve {
+	boolean cycle = false;
+	
 	public static int findParent(int[] parent, int x) {
 		// 루트 노드가 아니면 루트 노드를 찾을 때까지 재귀 호출
     /*

@@ -14,7 +14,7 @@ public class solve {
 			parent[x] = findParent(parent, parent[x]);
 		return parent[x];
 	}
-	public static void union_parent(int[] parent, int a, int b) {
+	public static void unionParent(int[] parent, int a, int b) {
 		a = findParent(parent, a); // a의 루트 노드를 찾아
 		b = findParent(parent, b); // b의 루트 노드를 찾아
 		
@@ -34,7 +34,7 @@ public class solve {
 		for(int i = 0; i < e; i++) {
 			int a = scan.nextInt();
 			int b = scan.nextInt();
-			union_parent(parent, a, b);
+			unionParent(parent, a, b);
 		}
 		
 		// 각 원소가 속한 집합 출력

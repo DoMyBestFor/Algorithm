@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    ArrayList<Stage> list;
+   
     class Stage{
         int stage;
         int people;
@@ -11,6 +11,7 @@ class Solution {
             this.people = people;
         }
     }
+    
     class Fail implements Comparable<Fail>{
         int stage;
         float fail_rate;
@@ -30,11 +31,11 @@ class Solution {
         }
     }
     public int[] solution(int N, int[] stages) {
-        int[] count = new int[502];
+        int[] count = new int[N+2];
         int[] answer = new int[N];
-        float[] fail = new float[N+1];
-        list = new ArrayList<>();
-        ArrayList<Fail> arr = new ArrayList<>();
+        float[] fail = new float[N];
+        ArrayList<Stage> list = new ArrayList<>();
+        ArrayList<Fail> fail_rates = new ArrayList<>();
         
         for(int i = 0; i < stages.length; i++){
             count[stages[i]]++;
@@ -44,7 +45,7 @@ class Solution {
                 list.add(new Stage(i, count[i]));
         }
         
-        for(int i = 0; i <= N; i++){
+        for(int i = 0; i < N; i++){
             int sum = 0;
             if(list.get(i).people != 0){
                 for(int j = i; j <= N; j++){
@@ -57,12 +58,12 @@ class Solution {
         }
         
         for(int i = 0; i < N; i++){
-            arr.add(new Fail(i+1, fail[i]));
+            fail_rates.add(new Fail(i+1, fail[i]));
         }
-        Collections.sort(arr);
+        Collections.sort(fail_rates);
         
         for(int i = 0; i < N; i++){
-            answer[i] = arr.get(i).stage;
+            answer[i] = fail_rates.get(i).stage;
         }
         return answer;
     }

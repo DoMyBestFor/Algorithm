@@ -43,6 +43,7 @@ public class solve{
 			}
 			
 			list.add(result);
+			return;
 		}
 		
 		for(int i = start; i < arr.length; i++) {

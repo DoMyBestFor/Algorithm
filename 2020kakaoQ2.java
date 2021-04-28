@@ -1,128 +1,133 @@
 import java.util.*;
 
 class Solution {
-    ArrayList<String> opts; // 쓰이는 연산자들 모음
     
-    String[] per; // 순열 배열을 만들 공간
+    ArrayList<String> opt;
+    ArrayList<String> postfix;
     boolean[] visited;
-    
-    String exp; // 중위 연산자 식
-    ArrayList<String> postfix; // 후위 연산자 식
-    Stack<String> stack = new Stack<>(); // 연산자 넣을 스택
+    String[] permutation;
+    String exp;
     
     long max = Long.MIN_VALUE;
-    
-    public long solution(String expression) {
-        this.exp = expression;
-        opts = new ArrayList<>();
+    public long solution(String exp) {
+        // 존재하는 연산자 리스트 구하기
+        // 연산자의 우선순위에 관한 모든 순열 구하기
+        // 각 순열에 대해 식의 값을 구하기.
+        // 식의 값을 구하기 위해 후위 연산식으로 변형
+        // 후위 연산식의 계산
+        // 가장 큰 값 갱신
+        
+        this.exp = exp;
+        opt = new ArrayList<>();
         postfix = new ArrayList<>();
         
-        if(exp.contains("+")){
-            opts.add("+");
+        for(int i = 0; i < exp.length(); i++){
+            if(exp.charAt(i) == '+' || exp.charAt(i) == '*' || exp.charAt(i) == '-'){
+                if(!opt.contains(exp.charAt(i) + "")){
+                    // 보유하지 않으면
+                    opt.add(exp.charAt(i) + "");
+                }
+            }
         }
-        if(exp.contains("-")){
-            opts.add("-");
-        }
-        if(exp.contains("*")){
-            opts.add("*");
-        }
-        
-        per = new String[opts.size()];
-        visited = new boolean[opts.size()];
+        visited = new boolean[opt.size()];
+        permutation = new String[opt.size()];
         
         dfs(0);
         
         return max;
+        
     }
     
     public void dfs(int start){
-        if(start == per.length){
-            translate_postfix();
-            update_max();
-            
-            for(int x = 0; x < per.length; x++)
-            System.out.println(per[x]);
-            
-            return;
+        if(start == opt.size()){
+            // 다 채우면 계산해서 갱신하자
+            transportation(); // 후위 표기식 변환
+            update(); // 후위 표기식 계산 후 업데이트
         }
         
-        for(int i = 0; i < per.length; i++){
+        for(int i = 0; i < opt.size(); i++){
             if(visited[i] == false){
                 visited[i] = true;
-                per[start] = opts.get(i);
+                permutation[start] = opt.get(i);
                 dfs(start + 1);
-                per[start] = "";
                 visited[i] = false;
             }
         }
     }
     
-    public void translate_postfix(){
-        // 연산자와 우선순위를 같이 저장함. 숫자가 작을수록 우선순위가 높음
-        HashMap<String, Integer> hm = new HashMap<>();
-        for(int i = 0; i < per.length; i++){
-            hm.put(per[i], i);
+    public void transportation(){
+        // 연산자, 우선순위 쌍 저장
+        HashMap<String, Integer> priority = new HashMap<>();
+        Stack<String> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0; i < permutation.length; i++){
+            priority.put(permutation[i], i);
         }
         
-        StringBuilder sb = new StringBuilder();
-        // 후위 연산자로 변환
         for(int i = 0; i < exp.length(); i++){
-            char c = exp.charAt(i);
             if(exp.charAt(i) == '+' || exp.charAt(i) == '-' || exp.charAt(i) == '*'){
-                // 연산자라면
-                postfix.add(sb.toString()); // 연산자가 나오면 이전까지의 피연산자 넣어
-                sb.delete(0, sb.length()); // sb는 이제 초기화
-                // 스택이 안 비어 있으면 우선순위 비교 후 넣어
-                // 우선순위 비교해서 더 높은 우선순위만 넣을 수 있음
-                while(!stack.isEmpty() && hm.get(c + "") <= hm.get(stack.peek())){
-                    postfix.add(stack.pop());
-                }
-                stack.push(c + "");
+                // 연산자라면 스택에 넣어
+                // 우선순위 체크 하기.
+                postfix.add(sb.toString());
+                sb.delete(0, sb.length());
                 
+                if(stack.isEmpty()){
+                    stack.push(exp.charAt(i) + "");
+                }
+                else{
+                    while(!stack.isEmpty() && priority.get(exp.charAt(i) + "") <= priority.get(stack.peek())){
+                        // 넣으려고 하는게 우선순위가 더 작으면 
+                        // 내가 우선순위 더 높아질 때까지 빼고 넣어
+                        postfix.add(stack.pop());
+                    }
+                    stack.push(exp.charAt(i) + "");
+                }
             }
             else{
-                // 연산자가 아니면 문자열에 더해
-                sb.append(c);
+                // 연산자가 아니면 피연산자 문자열에 추가
+                sb.append(exp.charAt(i));
             }
         }
-        
         postfix.add(sb.toString());
+        
         while(!stack.isEmpty()){
-            // 나머지 연산자 다 집어넣어
             postfix.add(stack.pop());
         }
         
     }
     
-    public void update_max(){
-        Stack<Long> stack_cal = new Stack<>();
-        String num = "";
+    public void update(){
+        Stack<Long> stack = new Stack<>();
         
-        for(String c : postfix){
-            if(c.equals("+") || c.equals("-") || c.equals("*")){
-                // 연산자라면 계산해서 넣어
-                long b = stack_cal.pop();
-                long a = stack_cal.pop();
-                long result = calculate(a, b, c);
+        for(int i = 0; i < postfix.size(); i++){
+            if(opt.contains(postfix.get(i))){
+                // 연산자라면
+                long b = stack.pop();
+                long a = stack.pop();
+                long result = calculate(a, b, postfix.get(i));
                 
-                stack_cal.push(result);
+                stack.push(result);
             }
             else{
-                // 연산자가 아니면 그냥 넣어
-                stack_cal.push(Long.parseLong(c));
+                // 연산자가 아니라면
+                stack.push(Long.parseLong(postfix.get(i)));
             }
         }
         
-        max = Math.max(max, Math.abs(stack_cal.pop()));
+        max = Math.max(max, Math.abs(stack.pop()));
     }
     
-    public long calculate(long a, long b, String c){
-        if(c.equals("+"))
+    public long calculate(long a, long b, String opt){
+        if(opt.equals("+")){
             return a + b;
-        else if(c.equals("-"))
-            return a - b;
-        else if(c.equals("*"))
+        }
+        else if(opt.equals("*")){
             return a * b;
+        }
+        else if(opt.equals("-")){
+            return a - b;
+        }
         
         return -1;
     }

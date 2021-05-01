@@ -4,15 +4,15 @@ class Solution {
     String[] user_id;
     String[] banned_id;
     ArrayList<HashSet<String>> list;
-    HashSet<HashSet<String>> result;
-    LinkedHashSet<String> hashset;
+    HashSet<TreeSet<String>> result;
+    TreeSet<String> hashset;
     
     public int solution(String[] user_id, String[] banned_id) {
         this.user_id = user_id;
         this.banned_id = banned_id;
         list = new ArrayList<>();
         result = new HashSet<>();
-        hashset = new LinkedHashSet<>();
+        hashset = new TreeSet<>();
         
         for(String banId : banned_id){
             HashSet<String> set = new HashSet<>();
@@ -32,7 +32,7 @@ class Solution {
     
     public void dfs(int index){
         if(index == banned_id.length){
-            
+            // 그냥 hashset을 넣으면 hashset의 변경사항이 계속 result에서 반영이 된다.
             result.add(new HashSet<String>(hashset));
             
             return;

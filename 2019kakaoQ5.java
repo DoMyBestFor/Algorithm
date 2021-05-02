@@ -3,7 +3,6 @@ import java.util.*;
 class Solution {
     public int solution(int[] stones, int k) {
         int answer = 0;
-        int count = 0;
         
         int[] copy = stones.clone();
         Arrays.sort(copy);
@@ -48,12 +47,13 @@ class Solution {
         int max_count = Integer.MIN_VALUE;
         
         for(int i = 0; i < stones.length; i++){
-            if(count >= k){
-                return true;
-            }
+           
             
             if(stones[i] <= 0){
                 count++;
+                if(count >= k){
+                    return true;
+                }
             }
             else{
                 max_count = Math.max(max_count, count);

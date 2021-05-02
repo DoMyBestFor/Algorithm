@@ -1,54 +1,52 @@
 import java.util.*;
 
 class Solution {
-    String[] user_id;
-    String[] banned_id;
-    ArrayList<HashSet<String>> list;
-    HashSet<TreeSet<String>> result;
-    TreeSet<String> hashset;
+    HashSet<String> set;
+    HashSet<HashSet<String>> result;
     
     public int solution(String[] user_id, String[] banned_id) {
-        this.user_id = user_id;
-        this.banned_id = banned_id;
-        list = new ArrayList<>();
+        ArrayList<ArrayList<String>> list = new ArrayList<>();
+        set = new HashSet<>();
         result = new HashSet<>();
-        hashset = new TreeSet<>();
         
-        for(String banId : banned_id){
-            HashSet<String> set = new HashSet<>();
+        for(String bannedId : banned_id){
+            ArrayList<String> users = new ArrayList<>();
             for(String userId : user_id){
-                if(isMatched(banId, userId)){
-                    set.add(userId);
+                if(isMatched(userId, bannedId)){
+                    users.add(userId);
                 }
             }
-            list.add(set);
-        }        
+            list.add(users);
+        }
         
-        dfs(0);
-        
+        dfs(list, 0);
         return result.size();
         
     }
     
-    public void dfs(int index){
-        if(index == banned_id.length){
-            // 그냥 hashset을 넣으면 hashset의 변경사항이 계속 result에서 반영이 된다.
-            result.add(new HashSet<String>(hashset));
-            
+    public void dfs(ArrayList<ArrayList<String>> list, int index){
+        if(index == list.size()){
+            if(set.size() == list.size()){
+                result.add(new HashSet<String>(set));
+            }
             return;
         }
         
-        for(String banId : list.get(index)){
-            if(!hashset.contains(banId)){
-                hashset.add(banId);
-                dfs(index + 1);
-                hashset.remove(banId);
-            }
+        for(String id : list.get(index)){
+            
+                if(!set.contains(id)){
+                    // 방문하지 않은 것이라면
+                    set.add(id);
+                    dfs(list, index + 1);
+                    set.remove(id);
+                }
+            
         }
     }
     
-    public boolean isMatched(String banId, String userId){
-        String regex = banId.replace("*", ".");
+    public boolean isMatched(String userId, String bannedId){
+        // 매칭 확인 함수
+        String regex = bannedId.replace("*", ".");
         return userId.matches(regex);
     }
 }

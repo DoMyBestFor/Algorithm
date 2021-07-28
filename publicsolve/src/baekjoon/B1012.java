@@ -1,9 +1,10 @@
+package baekjoon;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class B1012 {
 	
 	static boolean dfs(int[][] map, int x, int y) {
 		if(x < 0 || y < 0 || x >= map.length || y >= map[0].length) {

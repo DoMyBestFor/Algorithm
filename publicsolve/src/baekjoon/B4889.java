@@ -55,6 +55,7 @@ public class B4889 {
 				// 그래서 홀수개가 남아 있을 경우는 생각할 필요 없다.
 				count += stack.size() / 2;
 			}
+			
 			System.out.println(tc + ". " + count);
 		}
 		

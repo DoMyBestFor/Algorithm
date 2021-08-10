@@ -7,6 +7,7 @@ class Solution {
         List<Integer> answer = new ArrayList<>();
         
         for(int i = 0; i < progresses.length; i++){
+        	// 진도율과 인덱스를 같이 저장
             queue.offer(new int[] {progresses[i], i});
         }
         while(!queue.isEmpty()){

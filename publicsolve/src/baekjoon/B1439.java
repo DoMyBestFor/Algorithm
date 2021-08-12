@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 // 이것이 코딩테스트다. 실전문제 Q03 나의 풀이
@@ -8,7 +10,6 @@ public class Main {
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
 		String S = st.nextToken();
 		int i = 0;
 		int zero_count = 0;

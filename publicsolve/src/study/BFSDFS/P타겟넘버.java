@@ -1,4 +1,4 @@
-package study;
+package study.BFSDFS;
 
 public class P타겟넘버 {
 	/**

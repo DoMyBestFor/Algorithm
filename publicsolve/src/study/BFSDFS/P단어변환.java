@@ -1,4 +1,4 @@
-package study;
+package study.BFSDFS;
 
 public class P단어변환 {
 	/**

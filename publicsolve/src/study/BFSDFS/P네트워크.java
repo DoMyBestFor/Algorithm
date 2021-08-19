@@ -1,4 +1,4 @@
-package study;
+package study.BFSDFS;
 
 import java.util.HashSet;
 

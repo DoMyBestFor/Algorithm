@@ -1,3 +1,4 @@
+package baekjoon;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -5,7 +6,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
-public class Main {
+public class B1759 {
+	/**
+	 * 백준 1759번
+	 * 서로 다른 L개의 알파벳 소문자로 구성되는데
+	 * 최소 1개의 모음, 최소 2개의 자음은 있어야함.
+	 * 오름차순으로 배열되어 있어야 함.
+	 * 가능성 있는 암호 모두 구하기
+	 * -> 가능성 있는 조합만 추출해서 해결
+	 * 
+	 */
 	static String[] strs;
 	static boolean[] visited;
 	static ArrayList<String> result;

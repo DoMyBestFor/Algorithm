@@ -1,69 +1,81 @@
+package baekjoon;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+
+public class B1260{
 	
-	static void DFS(LinkedList<Integer>[] lists, int init_node, boolean[] visited) {
-		visited[init_node] = true;
-		System.out.print(init_node + " ");
-			for(int node : lists[init_node]) {
-				if(visited[node] != true) {
-					DFS(lists, node, visited);
-				}
-			}
-		
-	}
-	static void BFS(LinkedList<Integer>[] lists, int init_node, boolean[] visited) {
-		Queue<Integer> queue = new LinkedList<>();
-		visited[init_node] = true;
-		queue.offer(init_node);
-		while(queue.size() != 0) {
-			System.out.print(queue.peek() + " ");
-			for(int node : lists[queue.poll()]) {
-				if(visited[node] != true) {
-				visited[node] = true;
-				queue.offer(node);
-				}
-			}
-		}
-	}
+	private static int N, M, start;
+	private static ArrayList<Integer>[] graph;
+	private static boolean[] visited;
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		int v_count = Integer.parseInt(st.nextToken());
-		int l_count = Integer.parseInt(st.nextToken());
-		int init_node = Integer.parseInt(st.nextToken());
-		boolean[] visited = new boolean[v_count + 1];
-		int start, end;
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		start = Integer.parseInt(st.nextToken());
 		
-		LinkedList<Integer>[] lists = new LinkedList[v_count + 1];
-		for(int i = 0; i <= v_count; i++) {
-			lists[i] = new LinkedList<Integer>();
+		graph = new ArrayList[N + 1];
+		visited = new boolean[N + 1];
+		for(int i = 1; i <= N; i++) {
+			graph[i] = new ArrayList<>();
 		}
 		
-		for(int i = 0; i < l_count; i++) {
+		for(int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
-			start = Integer.parseInt(st.nextToken());
-	        end = Integer.parseInt(st.nextToken());
-	        lists[start].add(end);
-	        lists[end].add(start);
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			// 주어지는 간선은 양방향
+			graph[a].add(b);
+			graph[b].add(a);
 		}
 		
-		for(int i = 1; i <= v_count; i++) {
-			Collections.sort(lists[i]);
+		// 작은 정점부터 방문해야 함
+		for(int i = 1; i <= N; i++) {
+			Collections.sort(graph[i]);
 		}
 		
-		DFS(lists, init_node, visited);
+		dfs(start);
 		System.out.println();
-		Arrays.fill(visited, false);
-		BFS(lists, init_node, visited);
+		bfs();
+		
+	}
+	
+	public static void dfs(int start) {
+		visited[start] = true;
+		System.out.print(start + " ");
+		for(int n : graph[start]) {
+			if(visited[n] == false) {
+				dfs(n);
+			}
+		}
+		
+	}
+	public static void bfs() {
+		visited = new boolean[N + 1];
+		Queue<Integer> queue = new LinkedList<>();
+		queue.offer(start);
+		
+		while(!queue.isEmpty()) {
+			int element = queue.poll();
+			
+			if(visited[element] == false) {
+				visited[element] = true; // 방문했음
+				System.out.print(element + " ");
+				
+				for(int n : graph[element]) {
+					queue.offer(n);
+				}
+			}
+		}
 		
 	}
 }

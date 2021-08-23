@@ -25,42 +25,6 @@ public class B3109빵집 {
 		C = Integer.parseInt(st.nextToken());
 		
 		map = new char[R][C];
-		// x : 건물, . : 빈 칸
-		for(int i = 0; i < R; i++) {
-			String str = br.readLine();
-			for(int j = 0; j < C; j++) {
-				map[i][j] = str.charAt(j);
-			}
-		}
-		for(int i = 0; i < R; i++) {
-			setPipe(i, 0);
-		}
-		System.out.println(answer);
-	}
-	
-	public static boolean setPipe(int x, int y) {
-		for(int i = 0; i < 3; i++) {
-			int nx = x + dx[i];
-			int ny = y + 1;
-			
-			if(nx < 0 || ny < 0 || nx >= R || ny >= C)
-				continue;
-			
-			if(map[nx][ny] == '.') {
-				// 비어 있으면
-				if(ny == C - 1) {
-					// 마지막 열에 도착하면
-					map[nx][ny] = 'x';
-					answer++;
-					return true;
-				}
-				
-				map[nx][ny] = 'x';
-				if(setPipe(nx, ny))
-					return true;
-			}
-		}
-		return false;
 	}
 
 }

@@ -48,8 +48,8 @@ public class B2021 {
 
 		visitedLines = new boolean[L];
 		visitedStations = new boolean[N + 1];
-		lines = new ArrayList[L];
-		stations = new ArrayList[N + 1];
+		lines = new ArrayList[L]; // 해당 노선 지나는 역들
+		stations = new ArrayList[N + 1]; // 해당 역이 지나는 노선들
 		for (int i = 1; i <= N; i++) {
 			stations[i] = new ArrayList<>();
 		}

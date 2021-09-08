@@ -26,6 +26,7 @@ class B1697{
 			this.cnt = cnt;
 		}
 	}
+	
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -37,6 +38,7 @@ class B1697{
 		bfs();
 		System.out.println(answer);
 	}
+	
 	public static void bfs() {
 		Queue<Find> queue = new LinkedList<>();
 		queue.offer(new Find(N, 0));
